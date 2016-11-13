@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Best Spring Boot Example Tutorial Project</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <h1><a href="/swagger-ui.html"><img width="100"
+                                            src="https://avatars0.githubusercontent.com/u/7658037?v=3&s=200"/></a>
+            Spring Boot Tutorial Project</h1>
+        <p>This project shows you how to create a REST api with Spring Boot + Lombok +H2 + Swagger + MapStruct</p>
+        <p><a class="btn btn-primary btn-lg" href="https://github.com/dropby/spring-boot-tutorial" role="button">GitHub
+            repo &raquo;</a></p>
+    </div>
+</div>
+
+<div class="container">
+    <h2>SpringBoot</h2>
+    <!--@formatter:off-->
+    <pre>
+&lt?xml version="1.0" encoding="UTF-8"?&gt
+&ltproject xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt
+    &ltmodelVersion&gt4.0.0&lt/modelVersion&gt
+
+    &ltgroupId&gtcom.heroku&lt/groupId&gt
+    &ltartifactId&gtspring-boot-tutorial&lt/artifactId&gt
+    &ltversion&gt0.0.1-SNAPSHOT&lt/version&gt
+
+    &ltproperties&gt
+        &ltjava.version&gt1.8&lt/java.version&gt
+    &lt/properties&gt
+
+    &ltparent&gt
+        &ltgroupId&gtorg.springframework.boot&lt/groupId&gt
+        &ltartifactId&gtspring-boot-starter-parent&lt/artifactId&gt
+        &ltversion&gt1.4.2.RELEASE&lt/version&gt
+    &lt/parent&gt
+
+    &ltdependencies&gt
+	    &ltdependency&gt
+            &ltgroupId&gtorg.springframework.boot&lt/groupId&gt
+            &ltartifactId&gtspring-boot-starter-web&lt/artifactId&gt
+        &lt/dependency&gt
+	&lt/dependencies&gt
+
+    &ltbuild&gt
+        &ltplugins&gt
+	        &ltplugin&gt
+                &ltgroupId&gtorg.springframework.boot&lt/groupId&gt
+                &ltartifactId&gtspring-boot-maven-plugin&lt/artifactId&gt
+            &lt/plugin&gt
+        &lt/plugins&gt
+    &lt/build&gt
+&lt/project&gt
+    </pre>
+    <h2>Lombok</h2>
+    <!--@formatter:off-->
+    <pre>
+    &ltproperties&gt
+        &ltorg.projectlombok.maven.version&gt1.16.10&lt/org.projectlombok.maven.version&gt
+    &lt/properties&gt
+
+	&ltdependencies&gt
+        &ltdependency&gt
+            &ltgroupId&gtorg.projectlombok&lt/groupId&gt
+            &ltartifactId&gtlombok&lt/artifactId&gt
+            &ltversion&gt${org.projectlombok.maven.version}&lt/version&gt
+            &ltscope&gtprovided&lt/scope&gt
+        &lt/dependency&gt
+    &lt/dependencies&gt
+    </pre>
+     <!--@formatter:on-->
+     <!--@formatter:on-->
+    <h2>H2 (JPA)</h2>
+    <!--@formatter:off-->
+    <pre>
+        &ltdependency&gt
+            &ltgroupId&gtorg.springframework.boot&lt/groupId&gt
+            &ltartifactId&gtspring-boot-starter-data-jpa&lt/artifactId&gt
+        &lt/dependency&gt
+        &ltdependency&gt
+            &ltgroupId&gtcom.h2database&lt/groupId&gt
+            &ltartifactId&gth2&lt/artifactId&gt
+        &lt/dependency&gt
+    </pre>
+     <!--@formatter:on-->
+    <h2>Swagger</h2>
+    <!--@formatter:off-->
+    <pre>
+        &ltdependency&gt
+            &ltgroupId&gtio.springfox&lt/groupId&gt
+            &ltartifactId&gtspringfox-swagger2&lt/artifactId&gt
+            &ltversion&gt2.4.0&lt/version&gt
+        &lt/dependency&gt
+        &ltdependency&gt
+            &ltgroupId&gtio.springfox&lt/groupId&gt
+            &ltartifactId&gtspringfox-swagger-ui&lt/artifactId&gt
+            &ltversion&gt2.4.0&lt/version&gt
+        &lt/dependency&gt
+    </pre>
+     <!--@formatter:on-->
+    <h2>MapStruct</h2>
+    <h4>How to solve the error with lombok. This trick can be useful with other generated stuff as well</h4>
+    https://github.com/mapstruct/mapstruct/issues/510
+    <!--@formatter:off-->
+    <pre>
+ &lt!-- first de-lombok the sources to make getters/setters visible for mapstruct,
+but *DON'T'* add the output directory to the sources, as we will only need it for mapstruct processing --&gt
+    &ltplugin&gt
+        &ltgroupId&gtorg.projectlombok&lt/groupId&gt
+        &ltartifactId&gtlombok-maven-plugin&lt/artifactId&gt
+        &ltversion&gt${org.projectlombok.maven.version}&lt/version&gt
+        &ltexecutions&gt
+            &ltexecution&gt
+                &ltphase&gtgenerate-sources&lt/phase&gt
+                &ltgoals&gt
+                    &ltgoal&gtdelombok&lt/goal&gt
+                &lt/goals&gt
+                &ltconfiguration&gt
+                    &ltsourceDirectory&gtsrc/main/java&lt/sourceDirectory&gt
+                    &ltaddOutputDirectory&gtfalse&lt/addOutputDirectory&gt
+                    &ltoutputDirectory&gt${project.build.directory}/delombok&lt/outputDirectory&gt
+                &lt/configuration&gt
+            &lt/execution&gt
+        &lt/executions&gt
+    &lt/plugin&gt
+
+    &lt!-- use the de-lomobok files to create the necessary mappers --&gt
+    &ltplugin&gt
+        &ltgroupId&gtorg.bsc.maven&lt/groupId&gt
+        &ltartifactId&gtmaven-processor-plugin&lt/artifactId&gt
+        &ltversion&gt2.2.4&lt/version&gt
+        &ltconfiguration&gt
+            &ltdefaultOutputDirectory&gt
+                ${project.build.directory}/generated-sources/mapstruct
+            &lt/defaultOutputDirectory&gt
+            &ltprocessors&gt
+                &ltprocessor&gtorg.mapstruct.ap.MappingProcessor&lt/processor&gt
+            &lt/processors&gt
+            &ltsourceDirectory&gt
+                ${project.build.directory}/delombok
+            &lt/sourceDirectory&gt
+        &lt/configuration&gt
+        &ltexecutions&gt
+            &ltexecution&gt
+                &ltid&gtprocess&lt/id&gt
+                &ltphase&gtgenerate-sources&lt/phase&gt
+                &ltgoals&gt
+                    &ltgoal&gtprocess&lt/goal&gt
+                &lt/goals&gt
+            &lt/execution&gt
+        &lt/executions&gt
+    &lt/plugin&gt
+
+    &lt!-- now take the original sources together with the created mappers to the compiler --&gt
+    &ltplugin&gt
+        &ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
+        &ltartifactId&gtmaven-compiler-plugin&lt/artifactId&gt
+        &ltversion&gt3.0&lt/version&gt
+        &ltconfiguration&gt
+            &ltannotationProcessors&gt
+                &ltannotationProcessor&gtlombok.launch.AnnotationProcessorHider$AnnotationProcessor&lt/annotationProcessor&gt
+            &lt/annotationProcessors&gt
+        &lt/configuration&gt
+    &lt/plugin&gt
+    </pre>
+     <!--@formatter:on-->
+    <h6>Error: java: Annotation processor 'org.mapstruct.ap.MappingProcessor' not found</h6>
+    <!--@formatter:off-->
+    <pre>
+        &ltdependency&gt
+            &ltgroupId&gtorg.mapstruct&lt/groupId&gt
+            &ltartifactId&gtmapstruct-processor&lt/artifactId&gt
+            &ltscope&gtprovided&lt/scope&gt
+        &lt/dependency&gt
+    </pre>
+     <!--@formatter:on-->
+    https://intellij-support.jetbrains.com/hc/en-us/community/posts/206167129-why-is-causing-Error-java-Annotation-processor-org-mapstruct-ap-MappingProcessor-not-found-?sort_by=votes
+    https://github.com/jhipster/generator-jhipster/issues/1558
+
+</div>
+</body>
+</html>

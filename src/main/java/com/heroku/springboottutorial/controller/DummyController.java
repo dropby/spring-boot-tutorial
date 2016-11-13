@@ -1,7 +1,7 @@
 package com.heroku.springboottutorial.controller;
 
 
-import com.heroku.springboottutorial.persistence.entity.DummyEntity;
+import com.heroku.springboottutorial.dto.DummyDto;
 import com.heroku.springboottutorial.service.DummyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DummyController {
 
     @Autowired
-    DummyService service;
+    private DummyService service;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getAll() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return new ResponseEntity(service.getAll(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody DummyEntity dummyEntity) {
-        return new ResponseEntity<>(service.save(dummyEntity), HttpStatus.CREATED);
+    public ResponseEntity create(@RequestBody DummyDto dummyEntity) {
+        return new ResponseEntity(service.save(dummyEntity), HttpStatus.CREATED);
     }
 }

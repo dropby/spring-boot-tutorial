@@ -1,12 +1,12 @@
 package com.heroku.springboottutorial.service;
 
+import com.heroku.springboottutorial.dto.DummyDto;
 import com.heroku.springboottutorial.persistence.entity.DummyEntity;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
 public interface DummyService {
-    List<DummyEntity> getAll();
+    List<DummyDto> getAll();
 
-    DummyEntity save(DummyEntity dummyEntity);
+    DummyEntity save(DummyDto dummyEntity);
 }

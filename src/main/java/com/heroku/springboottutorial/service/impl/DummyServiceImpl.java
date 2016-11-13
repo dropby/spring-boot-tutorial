@@ -1,5 +1,7 @@
 package com.heroku.springboottutorial.service.impl;
 
+import com.heroku.springboottutorial.dto.DummyDto;
+import com.heroku.springboottutorial.mapper.DummyMapping;
 import com.heroku.springboottutorial.persistence.entity.DummyEntity;
 import com.heroku.springboottutorial.persistence.repository.DummyRepository;
 import com.heroku.springboottutorial.service.DummyService;
@@ -11,15 +13,13 @@ import java.util.List;
 @Service
 public class DummyServiceImpl implements DummyService {
     @Autowired
-    DummyRepository dummyRepository;
+    private DummyRepository dummyRepository;
 
-    @Override
-    public List<DummyEntity> getAll() {
-        return (List<DummyEntity>) dummyRepository.findAll();
+    public List<DummyDto> getAll() {
+        return DummyMapping.INSTANCE.dummyEntityToDto((List<DummyEntity>) dummyRepository.findAll());
     }
 
-    @Override
-    public DummyEntity save(DummyEntity dummyEntity) {
-        return dummyRepository.save(dummyEntity);
+    public DummyEntity save(DummyDto dummyEntity) {
+        return dummyRepository.save(DummyMapping.INSTANCE.dummyDtoToEntity(dummyEntity));
     }
 }
